@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,19 +43,45 @@ public class DenseMatrix extends Matrix{
         return el;
     }
 
-    public DenseMatrix mulDD(DenseMatrix other){
+    public DenseMatrix multDD(DenseMatrix other){
         if (cols != other.rows) throw new IllegalArgumentException("Dimensions disagree");
         DenseMatrix result = new DenseMatrix(rows, other.cols);
         for (int i = 0; i < rows; i++){
-            for (int j = 0; j < other.cols; j ++){
+            for (int j = 0; j < other.cols; j++){
                 for (int k = 0; k < cols; k++){
-                    result.matrix[i][j] = result.matrix[i][j] + matrix[i][k] * other.matrix[k][j];
+                    result.matrix[i][j] += matrix[i][k] * other.matrix[k][j];
                 }
             }
         }
-        printMatrix(result, "mulDD" + inF.substring(0, inF.length()- 4) + other.inF);
+        //printMatrix(result, "mulDD" + inF.substring(0, inF.length()- 4) + other.inF);
+        try{
+            File file = new File("mulDD" + inF.substring(0, inF.length()- 4) + other.inF);
+            FileWriter out = new FileWriter(file);
+            for (int i = 0; i < result.rows; i++){
+                for (int j = 0; j < result.cols; j++) {
+                    out.write(result.getEl(i, j) + " ");
+                }
+                out.write("\n");
+            }
+            out.close();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
         return result;
     }
+
+    /*public SparseMatrix test(DenseMatrix other){
+        SparseMatrix t = new SparseMatrix(2, 2);
+        double d = 0;
+        for (int i = 0; i < 2; i++)
+            for (int j = 0; j < 2; j++){
+                Point p = new Point(i,j);
+                d = d + 1;
+                t.matrix.put(p, d);
+        }
+        printMatrix(t, "FUCKU.txt");
+        return t;
+    }*/
 
     public SparseMatrix multDS(SparseMatrix other) {
         if (cols != other.rows) throw new IllegalArgumentException("Dimensions disagree");

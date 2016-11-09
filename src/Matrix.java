@@ -43,13 +43,13 @@ public abstract class Matrix {
         return n;
     }
 
-    public void printMatrix(Matrix matrix, String fileName){
+    public void printMatrix(Matrix mat, String fileName){
         try{
             File file = new File(fileName);
             FileWriter out = new FileWriter(file);
-            for (int i = 0; i < matrix.rows; i++){
-                for (int j = 0; j < matrix.cols; j++) {
-                    out.write(matrix.getEl(i, j) + " ");
+            for (int i = 0; i < mat.rows; i++){
+                for (int j = 0; j < mat.cols; j++) {
+                    out.write(mat.getEl(i, j) + " ");
                 }
                 out.write("\n");
             }
